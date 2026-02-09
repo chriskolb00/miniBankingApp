@@ -1,0 +1,73 @@
+<div class="dashboard">
+  <h1>Banking Dashboard</h1>
+  
+  <div class="summary-cards">
+    <app-summary-card 
+      title="Total Customers" 
+      [value]="customerCount.toString()" 
+      icon="👥"
+      [routerLink]="['/customers']">
+    </app-summary-card>
+    
+    <app-summary-card 
+      title="Total Accounts" 
+      [value]="accountCount.toString()" 
+      icon="💳"
+      [routerLink]="['/accounts']">
+    </app-summary-card>
+    
+    <app-summary-card 
+      title="Total Balance" 
+      [value]="'$' + totalBalance.toFixed(2)" 
+      icon="💰">
+    </app-summary-card>
+  </div>
+
+  <div class="recent-transactions">
+    <h2>Recent Transactions</h2>
+    <div class="transaction-table" *ngIf="recentTransactions.length > 0; else noTransactions">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Account ID</th>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>Description</th>
+            <th>Balance After</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let transaction of recentTransactions">
+            <td>{{ transaction.timestamp | date:'short' }}</td>
+            <td>{{ transaction.accountId }}</td>
+            <td>
+              <span 
+                class="badge" 
+                [class.deposit]="transaction.type === 0"
+                [class.withdrawal]="transaction.type === 1"
+                [class.transfer]="transaction.type === 2">
+                {{ getTransactionTypeLabel(transaction.type) }}
+              </span>
+            </td>
+            <td class="amount">${{ transaction.amount.toFixed(2) }}</td>
+            <td>{{ transaction.description }}</td>
+            <td>${{ transaction.balanceAfter.toFixed(2) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <ng-template #noTransactions>
+      <p class="no-data">No transactions available</p>
+    </ng-template>
+  </div>
+
+  <div class="quick-actions">
+    <h2>Quick Actions</h2>
+    <div class="action-buttons">
+      <button class="btn btn-primary" routerLink="/customers/new">+ Add Customer</button>
+      <button class="btn btn-primary" routerLink="/accounts/new">+ Create Account</button>
+      <button class="btn btn-primary" routerLink="/transactions/new">+ New Transaction</button>
+    </div>
+  </div>
+</div>

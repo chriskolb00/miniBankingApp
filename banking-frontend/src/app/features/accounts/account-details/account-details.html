@@ -1,0 +1,89 @@
+<div class="account-details" *ngIf="account">
+  <div class="header">
+    <h1>Account Details</h1>
+    <div class="actions">
+      <button class="btn btn-secondary" routerLink="/accounts">Back to List</button>
+      <button class="btn btn-primary" routerLink="/transactions/new">+ New Transaction</button>
+    </div>
+  </div>
+
+  <div class="account-card">
+    <div class="balance-display">
+      <h2>Current Balance</h2>
+      <div class="balance-amount">${{ account.balance.toFixed(2) }}</div>
+    </div>
+
+    <div class="account-info">
+      <div class="info-item">
+        <span class="label">Account Number:</span>
+        <span class="value">{{ account.accountNumber }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Owner Name:</span>
+        <span class="value">{{ account.ownerName }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Customer ID:</span>
+        <span class="value">
+          <a [routerLink]="['/customers', account.customerId]">{{ account.customerId }}</a>
+        </span>
+      </div>
+      <div class="info-item">
+        <span class="label">Account ID:</span>
+        <span class="value">{{ account.id }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="transactions-section">
+    <h2>Transaction History ({{ transactions.length }})</h2>
+
+    <div class="transactions-table" *ngIf="transactions.length > 0; else noTransactions">
+      <table>
+        <thead>
+          <tr>
+            <th>Date & Time</th>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>Description</th>
+            <th>Balance Before</th>
+            <th>Balance After</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let transaction of transactions">
+            <td>{{ transaction.timestamp | date:'short' }}</td>
+            <td>
+              <span 
+                class="badge" 
+                [class.deposit]="transaction.type === 0"
+                [class.withdrawal]="transaction.type === 1"
+                [class.transfer]="transaction.type === 2">
+                {{ getTransactionTypeLabel(transaction.type) }}
+              </span>
+            </td>
+            <td class="amount">
+              <span [class.positive]="transaction.type === 0" [class.negative]="transaction.type === 1">
+                {{ transaction.type === 1 ? '-' : '+' }}${{ transaction.amount.toFixed(2) }}
+              </span>
+            </td>
+            <td>{{ transaction.description }}</td>
+            <td>${{ transaction.balanceBefore.toFixed(2) }}</td>
+            <td>${{ transaction.balanceAfter.toFixed(2) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-template #noTransactions>
+      <div class="no-data">
+        <p>No transactions found for this account</p>
+        <button class="btn btn-primary" routerLink="/transactions/new">Create First Transaction</button>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+<div class="loading" *ngIf="!account">
+  <p>Loading account details...</p>
+</div>

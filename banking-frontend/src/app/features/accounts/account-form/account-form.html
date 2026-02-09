@@ -1,0 +1,69 @@
+<div class="account-form">
+  <div class="form-container">
+    <h1>Create New Account</h1>
+    
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="customer">Select Customer *</label>
+        <select 
+          id="customer" 
+          [(ngModel)]="account.customerId" 
+          name="customer"
+          (change)="onCustomerChange()"
+          required
+          class="form-control">
+          <option value="0">-- Select Customer --</option>
+          <option *ngFor="let customer of customers" [value]="customer.id">
+            {{ customer.firstName }} {{ customer.lastName }} ({{ customer.email }})
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="accountNumber">Account Number *</label>
+        <div class="input-with-button">
+          <input 
+            type="text" 
+            id="accountNumber" 
+            [(ngModel)]="account.accountNumber" 
+            name="accountNumber"
+            required
+            readonly
+            class="form-control">
+          <button type="button" class="btn btn-secondary" (click)="generateAccountNumber()">
+            Generate
+          </button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="ownerName">Owner Name *</label>
+        <input 
+          type="text" 
+          id="ownerName" 
+          [(ngModel)]="account.ownerName" 
+          name="ownerName"
+          required
+          class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label for="balance">Initial Balance *</label>
+        <input 
+          type="number" 
+          id="balance" 
+          [(ngModel)]="account.balance" 
+          name="balance"
+          min="0"
+          step="0.01"
+          required
+          class="form-control">
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+        <button type="submit" class="btn btn-primary">Create Account</button>
+      </div>
+    </form>
+  </div>
+</div>

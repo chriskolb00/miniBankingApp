@@ -1,0 +1,52 @@
+<div class="account-list">
+  <div class="header">
+    <h1>Accounts</h1>
+    <button class="btn btn-primary" routerLink="/accounts/new">+ Create Account</button>
+  </div>
+
+  <div class="search-bar">
+    <input 
+      type="text" 
+      placeholder="Search accounts by number or owner name..." 
+      (input)="searchAccounts($event)"
+      class="search-input">
+  </div>
+
+  <div class="accounts-table" *ngIf="filteredAccounts.length > 0; else noAccounts">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Account Number</th>
+          <th>Owner Name</th>
+          <th>Customer ID</th>
+          <th>Balance</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let account of filteredAccounts">
+          <td>{{ account.id }}</td>
+          <td>{{ account.accountNumber }}</td>
+          <td>{{ account.ownerName }}</td>
+          <td>{{ account.customerId }}</td>
+          <td class="balance">${{ account.balance.toFixed(2) }}</td>
+          <td>
+            <button 
+              class="btn btn-sm btn-info" 
+              [routerLink]="['/accounts', account.id]">
+              View Details
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #noAccounts>
+    <div class="no-data">
+      <p>No accounts found</p>
+      <button class="btn btn-primary" routerLink="/accounts/new">Create Your First Account</button>
+    </div>
+  </ng-template>
+</div>

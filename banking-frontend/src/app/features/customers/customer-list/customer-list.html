@@ -1,0 +1,57 @@
+<div class="customer-list">
+  <div class="header">
+    <h1>Customers</h1>
+    <button class="btn btn-primary" routerLink="/customers/new">+ Add Customer</button>
+  </div>
+
+  <div class="search-bar">
+    <input 
+      type="text" 
+      placeholder="Search customers by name or email..." 
+      (input)="searchCustomers($event)"
+      class="search-input">
+  </div>
+
+  <div class="customers-table" *ngIf="filteredCustomers.length > 0; else noCustomers">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Date of Birth</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let customer of filteredCustomers">
+          <td>{{ customer.id }}</td>
+          <td>{{ customer.firstName }} {{ customer.lastName }}</td>
+          <td>{{ customer.email }}</td>
+          <td>{{ customer.phone }}</td>
+          <td>{{ customer.dateOfBirth | date:'mediumDate' }}</td>
+          <td class="actions">
+            <button 
+              class="btn btn-sm btn-info" 
+              [routerLink]="['/customers', customer.id]">
+              View
+            </button>
+            <button 
+              class="btn btn-sm btn-danger" 
+              (click)="deleteCustomer(customer.id)">
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #noCustomers>
+    <div class="no-data">
+      <p>No customers found</p>
+      <button class="btn btn-primary" routerLink="/customers/new">Add Your First Customer</button>
+    </div>
+  </ng-template>
+</div>

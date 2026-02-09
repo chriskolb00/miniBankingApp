@@ -1,0 +1,46 @@
+<div class="main-layout">
+  <header class="header">
+    <div class="header-content">
+      <button class="menu-btn" (click)="toggleSidebar()">☰</button>
+      <h1 class="logo">🏦 Mini Banking System</h1>
+      <div class="spacer"></div>
+    </div>
+  </header>
+
+  <div class="layout-container">
+    <nav class="sidebar" [class.open]="isSidebarOpen">
+      <ul class="nav-menu">
+        <li>
+          <a routerLink="/dashboard" routerLinkActive="active" (click)="isSidebarOpen = false">
+            <span class="icon">📊</span>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a routerLink="/customers" routerLinkActive="active" (click)="isSidebarOpen = false">
+            <span class="icon">👥</span>
+            <span>Customers</span>
+          </a>
+        </li>
+        <li>
+          <a routerLink="/accounts" routerLinkActive="active" (click)="isSidebarOpen = false">
+            <span class="icon">💳</span>
+            <span>Accounts</span>
+          </a>
+        </li>
+        <li>
+          <a routerLink="/transactions" routerLinkActive="active" (click)="isSidebarOpen = false">
+            <span class="icon">💰</span>
+            <span>Transactions</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <main class="main-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+
+  <div class="sidebar-overlay" *ngIf="isSidebarOpen" (click)="toggleSidebar()"></div>
+</div>

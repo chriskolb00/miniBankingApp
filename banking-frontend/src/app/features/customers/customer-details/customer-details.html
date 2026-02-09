@@ -1,0 +1,90 @@
+<div class="customer-details" *ngIf="customer">
+  <div class="header">
+    <h1>Customer Details</h1>
+    <div class="actions">
+      <button class="btn btn-secondary" routerLink="/customers">Back to List</button>
+      <button class="btn btn-danger" (click)="deleteCustomer()">Delete Customer</button>
+    </div>
+  </div>
+
+  <div class="details-card">
+    <h2>Personal Information</h2>
+    <div class="info-grid">
+      <div class="info-item">
+        <span class="label">Customer ID:</span>
+        <span class="value">{{ customer.id }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Name:</span>
+        <span class="value">{{ customer.firstName }} {{ customer.lastName }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Email:</span>
+        <span class="value">{{ customer.email }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Phone:</span>
+        <span class="value">{{ customer.phone }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Date of Birth:</span>
+        <span class="value">{{ customer.dateOfBirth | date:'mediumDate' }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Member Since:</span>
+        <span class="value">{{ customer.createdAt | date:'mediumDate' }}</span>
+      </div>
+      <div class="info-item full-width">
+        <span class="label">Address:</span>
+        <span class="value">{{ customer.address }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="accounts-section">
+    <div class="section-header">
+      <h2>Accounts ({{ accounts.length }})</h2>
+      <div class="total-balance">
+        Total Balance: <strong>${{ getTotalBalance().toFixed(2) }}</strong>
+      </div>
+    </div>
+
+    <div class="accounts-table" *ngIf="accounts.length > 0; else noAccounts">
+      <table>
+        <thead>
+          <tr>
+            <th>Account Number</th>
+            <th>Owner Name</th>
+            <th>Balance</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let account of accounts">
+            <td>{{ account.accountNumber }}</td>
+            <td>{{ account.ownerName }}</td>
+            <td class="balance">${{ account.balance.toFixed(2) }}</td>
+            <td>
+              <button 
+                class="btn btn-sm btn-info" 
+                [routerLink]="['/accounts', account.id]">
+                View Details
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-template #noAccounts>
+      <div class="no-data">
+        <p>No accounts found for this customer</p>
+        <button class="btn btn-primary" routerLink="/accounts/new">Create Account</button>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+<div class="loading" *ngIf="!customer">
+  <p>Loading customer details...</p>
+</div>
