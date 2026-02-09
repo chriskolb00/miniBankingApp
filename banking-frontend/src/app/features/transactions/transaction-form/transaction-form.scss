@@ -14,6 +14,30 @@
       color: #333;
     }
 
+    .info-message {
+      background: #e3f2fd;
+      border-left: 4px solid #2196f3;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      .icon {
+        font-size: 1.2rem;
+      }
+
+      span {
+        color: #1976d2;
+        font-size: 0.95rem;
+      }
+
+      strong {
+        font-weight: 600;
+      }
+    }
+
     .current-balance {
       background: #e3f2fd;
       border-left: 4px solid #2196f3;

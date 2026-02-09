@@ -2,6 +2,11 @@
   <div class="form-container">
     <h1>Create New Account</h1>
     
+    <div class="info-message" *ngIf="preSelectedCustomerId && account.ownerName">
+      <span class="icon">ℹ️</span>
+      <span>Creating account for customer: <strong>{{ account.ownerName }}</strong></span>
+    </div>
+    
     <form (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="customer">Select Customer *</label>
@@ -12,8 +17,8 @@
           (change)="onCustomerChange()"
           required
           class="form-control">
-          <option value="0">-- Select Customer --</option>
-          <option *ngFor="let customer of customers" [value]="customer.id">
+          <option [value]="0">-- Select Customer --</option>
+          <option *ngFor="let customer of customers" [ngValue]="customer.id">
             {{ customer.firstName }} {{ customer.lastName }} ({{ customer.email }})
           </option>
         </select>

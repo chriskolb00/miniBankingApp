@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AccountService } from '../../../core/services/account.service';
 import { CustomerService } from '../../../core/services/customer.service';
 import { ToastService } from '../../../core/services/toast.service';
@@ -22,15 +22,24 @@ export class AccountFormComponent implements OnInit {
     ownerName: ''
   };
   customers: Customer[] = [];
+  preSelectedCustomerId: number | null = null;
 
   constructor(
     private accountService: AccountService,
     private customerService: CustomerService,
     private toastService: ToastService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+    // Check for pre-selected customer from query params
+    this.route.queryParams.subscribe(params => {
+      if (params['customerId']) {
+        this.preSelectedCustomerId = +params['customerId'];
+      }
+    });
+    
     this.loadCustomers();
     this.generateAccountNumber();
   }
@@ -39,6 +48,12 @@ export class AccountFormComponent implements OnInit {
     this.customerService.getAll().subscribe({
       next: (customers) => {
         this.customers = customers;
+        
+        // If there's a pre-selected customer, set it
+        if (this.preSelectedCustomerId) {
+          this.account.customerId = this.preSelectedCustomerId;
+          this.onCustomerChange();
+        }
       },
       error: (err) => {
         this.toastService.error('Failed to load customers');
@@ -64,7 +79,13 @@ export class AccountFormComponent implements OnInit {
       this.accountService.create(this.account).subscribe({
         next: () => {
           this.toastService.success('Account created successfully');
-          this.router.navigate(['/accounts']);
+          
+          // Navigate back to customer details if we came from there
+          if (this.preSelectedCustomerId) {
+            this.router.navigate(['/customers', this.preSelectedCustomerId]);
+          } else {
+            this.router.navigate(['/accounts']);
+          }
         },
         error: (err) => {
           this.toastService.error('Failed to create account');
@@ -94,6 +115,11 @@ export class AccountFormComponent implements OnInit {
   }
 
   cancel(): void {
-    this.router.navigate(['/accounts']);
+    // If we came from a customer details page, go back there
+    if (this.preSelectedCustomerId) {
+      this.router.navigate(['/customers', this.preSelectedCustomerId]);
+    } else {
+      this.router.navigate(['/accounts']);
+    }
   }
 }

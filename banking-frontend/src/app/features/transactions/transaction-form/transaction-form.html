@@ -2,6 +2,11 @@
   <div class="form-container">
     <h1>New Transaction</h1>
     
+    <div class="info-message" *ngIf="preSelectedAccountId && selectedAccount">
+      <span class="icon">ℹ️</span>
+      <span>Creating transaction for account: <strong>{{ selectedAccount.accountNumber }}</strong> ({{ selectedAccount.ownerName }})</span>
+    </div>
+    
     <form (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="account">Select Account *</label>
@@ -12,8 +17,8 @@
           (change)="onAccountChange()"
           required
           class="form-control">
-          <option value="0">-- Select Account --</option>
-          <option *ngFor="let account of accounts" [value]="account.id">
+          <option [value]="0">-- Select Account --</option>
+          <option *ngFor="let account of accounts" [ngValue]="account.id">
             {{ account.accountNumber }} - {{ account.ownerName }} (Balance: ${{ account.balance.toFixed(2) }})
           </option>
         </select>
@@ -32,9 +37,9 @@
           name="type"
           required
           class="form-control">
-          <option [value]="TransactionType.Deposit">Deposit</option>
-          <option [value]="TransactionType.Withdrawal">Withdrawal</option>
-          <option [value]="TransactionType.Transfer">Transfer</option>
+          <option [ngValue]="TransactionType.Deposit">Deposit</option>
+          <option [ngValue]="TransactionType.Withdrawal">Withdrawal</option>
+          <option [ngValue]="TransactionType.Transfer">Transfer</option>
         </select>
       </div>
 

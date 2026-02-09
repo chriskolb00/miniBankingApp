@@ -1,0 +1,153 @@
+# ==================================
+# ROOT .gitignore for Mini Banking App Monorepo
+# ==================================
+
+# System Files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE and Editor Files
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# ==================================
+# .NET / C# Backend (sampleDemoApi)
+# ==================================
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio cache/options
+.vs/
+.vscode/
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# NuGet Packages
+*.nupkg
+*.snupkg
+**/packages/*
+*.nuget.props
+*.nuget.targets
+
+# Database files
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# ==================================
+# Angular / Node.js Frontend (banking-frontend)
+# ==================================
+
+# Dependencies
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Compiled output
+/dist
+/tmp
+/out-tsc
+/bazel-out
+
+# Angular cache
+.angular/
+.sass-cache/
+
+# Environment files (if they contain secrets)
+# .env
+# .env.local
+# .env.*.local
+
+# Testing
+/coverage
+.nyc_output
+/e2e/*.js
+/e2e/*.map
+
+# Logs
+*.log
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Misc
+/.angular/cache
+.sass-cache/
+/connect.lock
+/libpeerconnection.log
+testem.log
+/typings
+__screenshots__/
+
+# Build artifacts
+*.tgz
+
+# ==================================
+# Documentation / Temporary Files
+# ==================================
+
+# Generated documentation files (optional - uncomment if needed)
+# *.md.bak
+# TODO.md
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# ==================================
+# Git / Version Control
+# ==================================
+
+# Ignore other git repositories
+.git/
+
+# ==================================
+# OS Generated Files
+# ==================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~

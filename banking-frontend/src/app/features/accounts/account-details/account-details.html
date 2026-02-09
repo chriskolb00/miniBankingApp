@@ -3,7 +3,7 @@
     <h1>Account Details</h1>
     <div class="actions">
       <button class="btn btn-secondary" routerLink="/accounts">Back to List</button>
-      <button class="btn btn-primary" routerLink="/transactions/new">+ New Transaction</button>
+      <button class="btn btn-primary" [routerLink]="['/transactions/new']" [queryParams]="{accountId: account.id}">+ New Transaction</button>
     </div>
   </div>
 
@@ -78,7 +78,7 @@
     <ng-template #noTransactions>
       <div class="no-data">
         <p>No transactions found for this account</p>
-        <button class="btn btn-primary" routerLink="/transactions/new">Create First Transaction</button>
+        <button class="btn btn-primary" [routerLink]="['/transactions/new']" [queryParams]="{accountId: account.id}">Create First Transaction</button>
       </div>
     </ng-template>
   </div>

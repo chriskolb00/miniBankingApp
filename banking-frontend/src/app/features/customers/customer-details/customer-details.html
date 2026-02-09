@@ -3,6 +3,7 @@
     <h1>Customer Details</h1>
     <div class="actions">
       <button class="btn btn-secondary" routerLink="/customers">Back to List</button>
+      <button class="btn btn-primary" [routerLink]="['/accounts/new']" [queryParams]="{customerId: customer.id}">+ Create Account</button>
       <button class="btn btn-danger" (click)="deleteCustomer()">Delete Customer</button>
     </div>
   </div>
@@ -79,7 +80,7 @@
     <ng-template #noAccounts>
       <div class="no-data">
         <p>No accounts found for this customer</p>
-        <button class="btn btn-primary" routerLink="/accounts/new">Create Account</button>
+        <button class="btn btn-primary" [routerLink]="['/accounts/new']" [queryParams]="{customerId: customer.id}">Create Account</button>
       </div>
     </ng-template>
   </div>
