@@ -1,0 +1,81 @@
+.customersPage {
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #111827;
+      margin: 0;
+    }
+  }
+
+  .searchBar {
+    margin-bottom: 1.5rem;
+
+    .searchInput {
+      width: 100%;
+      max-width: 500px;
+      padding: 0.75rem 1rem;
+      border: 1px solid #d1d5db;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+
+      &:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      }
+    }
+  }
+
+  .customersTable {
+    background: white;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+
+      th {
+        text-align: left;
+        padding: 0.75rem;
+        font-weight: 600;
+        font-size: 0.875rem;
+        color: #6b7280;
+        border-bottom: 2px solid #e5e7eb;
+      }
+
+      td {
+        padding: 0.75rem;
+        border-bottom: 1px solid #e5e7eb;
+        font-size: 0.875rem;
+      }
+
+      tbody tr:hover {
+        background: #f9fafb;
+      }
+    }
+  }
+
+  .noData {
+    background: white;
+    border-radius: 0.75rem;
+    padding: 3rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    text-align: center;
+
+    p {
+      color: #6b7280;
+      margin-bottom: 1rem;
+      font-size: 1.125rem;
+    }
+  }
+}
+
