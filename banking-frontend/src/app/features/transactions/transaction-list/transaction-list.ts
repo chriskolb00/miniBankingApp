@@ -4,10 +4,11 @@ import { RouterModule } from '@angular/router';
 import { TransactionService } from '../../../core/services/transaction.service';
 import { ToastService } from '../../../core/services/toast.service';
 import { Transaction, TransactionType } from '../../../core/models/transaction.model';
+import { CurrencyFormatPipe } from '../../../shared/pipes/currency-format-pipe';
 
 @Component({
   selector: 'app-transaction-list',
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, CurrencyFormatPipe],
   templateUrl: './transaction-list.html',
   styleUrl: './transaction-list.scss',
 })

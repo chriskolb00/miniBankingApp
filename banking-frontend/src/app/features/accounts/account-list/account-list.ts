@@ -4,10 +4,11 @@ import { RouterModule } from '@angular/router';
 import { AccountService } from '../../../core/services/account.service';
 import { ToastService } from '../../../core/services/toast.service';
 import { Account } from '../../../core/models/account.model';
+import { CurrencyFormatPipe } from '../../../shared/pipes/currency-format-pipe';
 
 @Component({
   selector: 'app-account-list',
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, CurrencyFormatPipe],
   templateUrl: './account-list.html',
   styleUrl: './account-list.scss',
 })

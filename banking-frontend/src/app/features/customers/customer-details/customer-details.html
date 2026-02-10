@@ -46,7 +46,7 @@
     <div class="section-header">
       <h2>Accounts ({{ accounts.length }})</h2>
       <div class="total-balance">
-        Total Balance: <strong>${{ getTotalBalance().toFixed(2) }}</strong>
+        Total Balance: <strong>{{ getTotalBalance() | currencyFormat }}</strong>
       </div>
     </div>
 
@@ -64,7 +64,7 @@
           <tr *ngFor="let account of accounts">
             <td>{{ account.accountNumber }}</td>
             <td>{{ account.ownerName }}</td>
-            <td class="balance">${{ account.balance.toFixed(2) }}</td>
+            <td class="balance">{{ account.balance | currencyFormat }}</td>
             <td>
               <button 
                 class="btn btn-sm btn-info" 

@@ -63,12 +63,12 @@
           </td>
           <td class="amount">
             <span [class.positive]="transaction.type === 0" [class.negative]="transaction.type === 1">
-              {{ transaction.type === 1 ? '-' : '+' }}${{ transaction.amount.toFixed(2) }}
+              {{ transaction.type === 1 ? '-' : '+' }}{{ transaction.amount | currencyFormat }}
             </span>
           </td>
           <td>{{ transaction.description }}</td>
-          <td>${{ transaction.balanceBefore.toFixed(2) }}</td>
-          <td>${{ transaction.balanceAfter.toFixed(2) }}</td>
+          <td>{{ transaction.balanceBefore | currencyFormat }}</td>
+          <td>{{ transaction.balanceAfter | currencyFormat }}</td>
         </tr>
       </tbody>
     </table>

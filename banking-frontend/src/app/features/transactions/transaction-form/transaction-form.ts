@@ -8,10 +8,11 @@ import { ToastService } from '../../../core/services/toast.service';
 import { CreateTransaction } from '../../../core/models/create-transaction.model';
 import { Account } from '../../../core/models/account.model';
 import { TransactionType } from '../../../core/models/transaction.model';
+import { CurrencyFormatPipe } from '../../../shared/pipes/currency-format-pipe';
 
 @Component({
   selector: 'app-transaction-form',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, CurrencyFormatPipe],
   templateUrl: './transaction-form.html',
   styleUrl: './transaction-form.scss',
 })
