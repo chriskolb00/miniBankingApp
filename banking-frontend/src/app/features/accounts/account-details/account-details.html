@@ -10,7 +10,7 @@
   <div class="account-card">
     <div class="balance-display">
       <h2>Current Balance</h2>
-      <div class="balance-amount">${{ account.balance.toFixed(2) }}</div>
+      <div class="balance-amount">{{ account.balance | currencyFormat }}</div>
     </div>
 
     <div class="account-info">
@@ -64,12 +64,12 @@
             </td>
             <td class="amount">
               <span [class.positive]="transaction.type === 0" [class.negative]="transaction.type === 1">
-                {{ transaction.type === 1 ? '-' : '+' }}${{ transaction.amount.toFixed(2) }}
+                {{ transaction.type === 1 ? '-' : '+' }}{{ transaction.amount | currencyFormat }}
               </span>
             </td>
             <td>{{ transaction.description }}</td>
-            <td>${{ transaction.balanceBefore.toFixed(2) }}</td>
-            <td>${{ transaction.balanceAfter.toFixed(2) }}</td>
+            <td>{{ transaction.balanceBefore | currencyFormat }}</td>
+            <td>{{ transaction.balanceAfter | currencyFormat }}</td>
           </tr>
         </tbody>
       </table>

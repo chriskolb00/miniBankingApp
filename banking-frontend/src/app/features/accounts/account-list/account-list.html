@@ -30,7 +30,7 @@
           <td>{{ account.accountNumber }}</td>
           <td>{{ account.ownerName }}</td>
           <td>{{ account.customerId }}</td>
-          <td class="balance">${{ account.balance.toFixed(2) }}</td>
+          <td class="balance">{{ account.balance | currencyFormat }}</td>
           <td>
             <button 
               class="btn btn-sm btn-info" 

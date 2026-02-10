@@ -8,10 +8,11 @@ import { Customer } from '../../../core/models/customer.model';
 import { Account } from '../../../core/models/account.model';
 import { Transaction } from '../../../core/models/transaction.model';
 import { SummaryCardComponent } from '../summary-card/summary-card';
+import { CurrencyFormatPipe } from '../../../shared/pipes/currency-format-pipe';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, RouterModule, SummaryCardComponent],
+  imports: [CommonModule, RouterModule, SummaryCardComponent, CurrencyFormatPipe],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })

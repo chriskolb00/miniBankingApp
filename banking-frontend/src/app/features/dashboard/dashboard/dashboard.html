@@ -18,7 +18,7 @@
     
     <app-summary-card 
       title="Total Balance" 
-      [value]="'$' + totalBalance.toFixed(2)" 
+      [value]="totalBalance | currencyFormat" 
       icon="💰">
     </app-summary-card>
   </div>
@@ -50,9 +50,9 @@
                 {{ getTransactionTypeLabel(transaction.type) }}
               </span>
             </td>
-            <td class="amount">${{ transaction.amount.toFixed(2) }}</td>
+            <td class="amount">{{ transaction.amount | currencyFormat }}</td>
             <td>{{ transaction.description }}</td>
-            <td>${{ transaction.balanceAfter.toFixed(2) }}</td>
+            <td>{{ transaction.balanceAfter | currencyFormat }}</td>
           </tr>
         </tbody>
       </table>

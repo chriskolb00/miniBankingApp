@@ -6,10 +6,11 @@ import { TransactionService } from '../../../core/services/transaction.service';
 import { ToastService } from '../../../core/services/toast.service';
 import { Account } from '../../../core/models/account.model';
 import { Transaction } from '../../../core/models/transaction.model';
+import { CurrencyFormatPipe } from '../../../shared/pipes/currency-format-pipe';
 
 @Component({
   selector: 'app-account-details',
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, CurrencyFormatPipe],
   templateUrl: './account-details.html',
   styleUrl: './account-details.scss',
 })
