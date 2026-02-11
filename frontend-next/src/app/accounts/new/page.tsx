@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, FormEvent } from 'react';
+import { useEffect, useState, FormEvent, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Button from '@/components/shared/Button';
@@ -9,9 +9,9 @@ import { CustomerService } from '@/lib/services/customer.service';
 import { Customer } from '@/lib/models/customer.model';
 import { CreateAccount } from '@/lib/models/account.model';
 import { generateAccountNumber } from '@/lib/utils/formatters';
-import styles from '../customers/new/page.module.scss';
+import styles from '../../customers/new/page.module.scss';
 
-export default function NewAccountPage() {
+function NewAccountForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const preSelectedCustomerId = searchParams.get('customerId');
@@ -164,6 +164,14 @@ export default function NewAccountPage() {
         </form>
       </div>
     </div>
+  );
+}
+
+export default function NewAccountPage() {
+  return (
+    <Suspense fallback={<div style={{ padding: '2rem', textAlign: 'center' }}>Loading...</div>}>
+      <NewAccountForm />
+    </Suspense>
   );
 }
 

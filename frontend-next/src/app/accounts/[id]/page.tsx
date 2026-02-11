@@ -19,7 +19,26 @@ export default function AccountDetailsPage() {
 
   const [account, setAccount] = useState<Account | null>(null);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedType, setSelectedType] = useState('all');
+
+  // Summary statistics
+  const [totalDeposits, setTotalDeposits] = useState(0);
+  const [totalWithdrawals, setTotalWithdrawals] = useState(0);
+  const [totalTransfers, setTotalTransfers] = useState(0);
+  const [depositCount, setDepositCount] = useState(0);
+  const [withdrawalCount, setWithdrawalCount] = useState(0);
+  const [transferCount, setTransferCount] = useState(0);
+
+  useEffect(() => {
+    if (selectedType === 'all') {
+      setFilteredTransactions(transactions);
+    } else {
+      const typeValue = selectedType === 'deposit' ? 0 : selectedType === 'withdrawal' ? 1 : 2;
+      setFilteredTransactions(transactions.filter((t) => t.type === typeValue));
+    }
+  }, [selectedType, transactions]);
 
   useEffect(() => {
     if (id) {
@@ -34,17 +53,31 @@ export default function AccountDetailsPage() {
         TransactionService.getByAccountId(id),
       ]);
       setAccount(accountData);
-      setTransactions(
-        transactionsData.sort(
-          (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
-        )
+      const sortedTransactions = transactionsData.sort(
+        (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
       );
+      setTransactions(sortedTransactions);
+      setFilteredTransactions(sortedTransactions);
+      calculateSummary(sortedTransactions);
     } catch (error) {
       console.error('Failed to load account data:', error);
       router.push('/accounts');
     } finally {
       setLoading(false);
     }
+  };
+
+  const calculateSummary = (transactionsList: Transaction[]) => {
+    const deposits = transactionsList.filter((t) => t.type === 0);
+    const withdrawals = transactionsList.filter((t) => t.type === 1);
+    const transfers = transactionsList.filter((t) => t.type === 2);
+
+    setTotalDeposits(deposits.reduce((sum, t) => sum + t.amount, 0));
+    setTotalWithdrawals(withdrawals.reduce((sum, t) => sum + t.amount, 0));
+    setTotalTransfers(transfers.reduce((sum, t) => sum + t.amount, 0));
+    setDepositCount(deposits.length);
+    setWithdrawalCount(withdrawals.length);
+    setTransferCount(transfers.length);
   };
 
   if (loading) {
@@ -101,7 +134,130 @@ export default function AccountDetailsPage() {
       <div className={styles.accountsSection}>
         <h2>Transaction History ({transactions.length})</h2>
 
-        {transactions.length > 0 ? (
+        {/* Transaction Summary Cards */}
+        {transactions.length > 0 && (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
+            <div style={{ 
+              background: 'white', 
+              borderRadius: '0.75rem', 
+              padding: '1.25rem', 
+              boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+              borderLeft: '4px solid #059669',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '1rem'
+            }}>
+              <div style={{ fontSize: '2rem' }}>💰</div>
+              <div>
+                <div style={{ fontSize: '0.875rem', color: '#6b7280', marginBottom: '0.25rem' }}>Total Deposits</div>
+                <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#059669', marginBottom: '0.125rem' }}>{formatCurrency(totalDeposits)}</div>
+                <div style={{ fontSize: '0.75rem', color: '#9ca3af' }}>{depositCount} transaction{depositCount !== 1 ? 's' : ''}</div>
+              </div>
+            </div>
+            <div style={{ 
+              background: 'white', 
+              borderRadius: '0.75rem', 
+              padding: '1.25rem', 
+              boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+              borderLeft: '4px solid #dc2626',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '1rem'
+            }}>
+              <div style={{ fontSize: '2rem' }}>💸</div>
+              <div>
+                <div style={{ fontSize: '0.875rem', color: '#6b7280', marginBottom: '0.25rem' }}>Total Withdrawals</div>
+                <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#dc2626', marginBottom: '0.125rem' }}>{formatCurrency(totalWithdrawals)}</div>
+                <div style={{ fontSize: '0.75rem', color: '#9ca3af' }}>{withdrawalCount} transaction{withdrawalCount !== 1 ? 's' : ''}</div>
+              </div>
+            </div>
+            <div style={{ 
+              background: 'white', 
+              borderRadius: '0.75rem', 
+              padding: '1.25rem', 
+              boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+              borderLeft: '4px solid #2563eb',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '1rem'
+            }}>
+              <div style={{ fontSize: '2rem' }}>🔄</div>
+              <div>
+                <div style={{ fontSize: '0.875rem', color: '#6b7280', marginBottom: '0.25rem' }}>Total Transfers</div>
+                <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#2563eb', marginBottom: '0.125rem' }}>{formatCurrency(totalTransfers)}</div>
+                <div style={{ fontSize: '0.75rem', color: '#9ca3af' }}>{transferCount} transaction{transferCount !== 1 ? 's' : ''}</div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Filter Buttons */}
+        {transactions.length > 0 && (
+          <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
+            <button
+              onClick={() => setSelectedType('all')}
+              style={{
+                padding: '0.5rem 1rem',
+                border: `2px solid ${selectedType === 'all' ? '#3b82f6' : '#e5e7eb'}`,
+                borderRadius: '0.5rem',
+                background: selectedType === 'all' ? '#3b82f6' : 'white',
+                color: selectedType === 'all' ? 'white' : '#111827',
+                cursor: 'pointer',
+                fontWeight: 500,
+                transition: 'all 0.2s'
+              }}
+            >
+              All ({transactions.length})
+            </button>
+            <button
+              onClick={() => setSelectedType('deposit')}
+              style={{
+                padding: '0.5rem 1rem',
+                border: `2px solid ${selectedType === 'deposit' ? '#059669' : '#e5e7eb'}`,
+                borderRadius: '0.5rem',
+                background: selectedType === 'deposit' ? '#059669' : 'white',
+                color: selectedType === 'deposit' ? 'white' : '#111827',
+                cursor: 'pointer',
+                fontWeight: 500,
+                transition: 'all 0.2s'
+              }}
+            >
+              Deposits ({depositCount})
+            </button>
+            <button
+              onClick={() => setSelectedType('withdrawal')}
+              style={{
+                padding: '0.5rem 1rem',
+                border: `2px solid ${selectedType === 'withdrawal' ? '#dc2626' : '#e5e7eb'}`,
+                borderRadius: '0.5rem',
+                background: selectedType === 'withdrawal' ? '#dc2626' : 'white',
+                color: selectedType === 'withdrawal' ? 'white' : '#111827',
+                cursor: 'pointer',
+                fontWeight: 500,
+                transition: 'all 0.2s'
+              }}
+            >
+              Withdrawals ({withdrawalCount})
+            </button>
+            <button
+              onClick={() => setSelectedType('transfer')}
+              style={{
+                padding: '0.5rem 1rem',
+                border: `2px solid ${selectedType === 'transfer' ? '#2563eb' : '#e5e7eb'}`,
+                borderRadius: '0.5rem',
+                background: selectedType === 'transfer' ? '#2563eb' : 'white',
+                color: selectedType === 'transfer' ? 'white' : '#111827',
+                cursor: 'pointer',
+                fontWeight: 500,
+                transition: 'all 0.2s'
+              }}
+            >
+              Transfers ({transferCount})
+            </button>
+          </div>
+        )}
+
+        {filteredTransactions.length > 0 ? (
           <div className={styles.accountsTable}>
             <table>
               <thead>
@@ -115,7 +271,7 @@ export default function AccountDetailsPage() {
                 </tr>
               </thead>
               <tbody>
-                {transactions.map((transaction) => (
+                {filteredTransactions.map((transaction) => (
                   <tr key={transaction.id}>
                     <td>{formatDateTime(transaction.timestamp)}</td>
                     <td>

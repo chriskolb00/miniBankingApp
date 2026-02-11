@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Button from '@/components/shared/Button';
 import Loading from '@/components/shared/Loading';
+import ConfirmationModal from '@/components/shared/ConfirmationModal';
 import { CustomerService } from '@/lib/services/customer.service';
 import { AccountService } from '@/lib/services/account.service';
 import { Customer } from '@/lib/models/customer.model';
@@ -20,6 +21,7 @@ export default function CustomerDetailsPage() {
   const [customer, setCustomer] = useState<Customer | null>(null);
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -44,14 +46,12 @@ export default function CustomerDetailsPage() {
   };
 
   const handleDelete = async () => {
-    if (confirm('Are you sure you want to delete this customer?')) {
-      try {
-        await CustomerService.delete(id);
-        router.push('/customers');
-      } catch (error) {
-        console.error('Failed to delete customer:', error);
-        alert('Failed to delete customer');
-      }
+    try {
+      await CustomerService.delete(id);
+      router.push('/customers');
+    } catch (error) {
+      console.error('Failed to delete customer:', error);
+      alert('Failed to delete customer');
     }
   };
 
@@ -78,7 +78,7 @@ export default function CustomerDetailsPage() {
           <Link href={`/accounts/new?customerId=${customer.id}`}>
             <Button variant="primary">+ Create Account</Button>
           </Link>
-          <Button variant="danger" onClick={handleDelete}>
+          <Button variant="danger" onClick={() => setShowDeleteModal(true)}>
             Delete Customer
           </Button>
         </div>
@@ -166,6 +166,18 @@ export default function CustomerDetailsPage() {
           </div>
         )}
       </div>
+
+      {/* Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={showDeleteModal}
+        title="Delete Customer"
+        message={`Are you sure you want to delete ${customer.firstName} ${customer.lastName}? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        type="danger"
+        onConfirm={handleDelete}
+        onCancel={() => setShowDeleteModal(false)}
+      />
     </div>
   );
 }
