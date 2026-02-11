@@ -17,7 +17,17 @@ import { CurrencyFormatPipe } from '../../../shared/pipes/currency-format-pipe';
 export class AccountDetailsComponent implements OnInit {
   account: Account | null = null;
   transactions: Transaction[] = [];
+  filteredTransactions: Transaction[] = [];
   accountId: number = 0;
+  selectedType: string = 'all';
+
+  // Summary statistics
+  totalDeposits: number = 0;
+  totalWithdrawals: number = 0;
+  totalTransfers: number = 0;
+  depositCount: number = 0;
+  withdrawalCount: number = 0;
+  transferCount: number = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -54,12 +64,43 @@ export class AccountDetailsComponent implements OnInit {
         this.transactions = transactions.sort((a, b) => 
           new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
         );
+        this.filteredTransactions = transactions;
+        this.calculateSummary();
       },
       error: (err) => {
         this.toastService.error('Failed to load transactions');
         console.error(err);
       }
     });
+  }
+
+  calculateSummary(): void {
+    this.totalDeposits = this.transactions
+      .filter(t => t.type === 0)
+      .reduce((sum, t) => sum + t.amount, 0);
+    
+    this.totalWithdrawals = this.transactions
+      .filter(t => t.type === 1)
+      .reduce((sum, t) => sum + t.amount, 0);
+    
+    this.totalTransfers = this.transactions
+      .filter(t => t.type === 2)
+      .reduce((sum, t) => sum + t.amount, 0);
+
+    this.depositCount = this.transactions.filter(t => t.type === 0).length;
+    this.withdrawalCount = this.transactions.filter(t => t.type === 1).length;
+    this.transferCount = this.transactions.filter(t => t.type === 2).length;
+  }
+
+  filterByType(type: string): void {
+    this.selectedType = type;
+    
+    if (type === 'all') {
+      this.filteredTransactions = this.transactions;
+    } else {
+      const typeValue = type === 'deposit' ? 0 : type === 'withdrawal' ? 1 : 2;
+      this.filteredTransactions = this.transactions.filter(t => t.type === typeValue);
+    }
   }
 
   getTransactionTypeLabel(type: number): string {

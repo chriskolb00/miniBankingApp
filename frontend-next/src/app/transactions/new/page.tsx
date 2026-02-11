@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, FormEvent } from 'react';
+import { useEffect, useState, FormEvent, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Button from '@/components/shared/Button';
@@ -11,7 +11,7 @@ import { CreateTransaction, TransactionType } from '@/lib/models/transaction.mod
 import { formatCurrency, generateAccountNumber } from '@/lib/utils/formatters';
 import styles from '../../customers/new/page.module.scss';
 
-export default function NewTransactionPage() {
+function NewTransactionForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const preSelectedAccountId = searchParams.get('accountId');
@@ -191,6 +191,14 @@ export default function NewTransactionPage() {
         </form>
       </div>
     </div>
+  );
+}
+
+export default function NewTransactionPage() {
+  return (
+    <Suspense fallback={<div style={{ padding: '2rem', textAlign: 'center' }}>Loading...</div>}>
+      <NewTransactionForm />
+    </Suspense>
   );
 }
 

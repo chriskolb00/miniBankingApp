@@ -48,19 +48,4 @@ export class CustomerListComponent implements OnInit {
       customer.email.toLowerCase().includes(term)
     );
   }
-
-  deleteCustomer(id: number): void {
-    if (confirm('Are you sure you want to delete this customer?')) {
-      this.customerService.delete(id).subscribe({
-        next: () => {
-          this.toastService.success('Customer deleted successfully');
-          this.loadCustomers();
-        },
-        error: (err) => {
-          this.toastService.error('Failed to delete customer');
-          console.error(err);
-        }
-      });
-    }
-  }
 }
