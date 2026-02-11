@@ -1,5 +1,4 @@
 {
-  "outputDirectory": "dist/banking-frontend",
   "rewrites": [
     {
       "source": "/(.*)",
