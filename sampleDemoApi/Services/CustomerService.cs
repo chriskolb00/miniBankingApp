@@ -65,7 +65,7 @@ public class CustomerService : ICustomerService
             Email = dto.Email,
             Phone = dto.Phone,
             Address = dto.Address,
-            DateOfBirth = dto.DateOfBirth,
+            DateOfBirth = DateTime.SpecifyKind(dto.DateOfBirth, DateTimeKind.Utc),
             CreatedAt = DateTime.UtcNow
         };
 

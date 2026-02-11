@@ -76,7 +76,8 @@ npm-debug.log
 yarn-error.log
 
 # Compiled output
-/dist
+dist/
+**/dist/
 /tmp
 /out-tsc
 /bazel-out
@@ -86,9 +87,10 @@ yarn-error.log
 .sass-cache/
 
 # Environment files (if they contain secrets)
-# .env
-# .env.local
-# .env.*.local
+.env
+.env.local
+.env.*.local
+*.env
 
 # Testing
 /coverage
@@ -151,3 +153,8 @@ $RECYCLE.BIN/
 
 # Linux
 *~
+
+# ==================================
+# Configuration Files with Secrets
+# ==================================
+appsettings.Development.json
