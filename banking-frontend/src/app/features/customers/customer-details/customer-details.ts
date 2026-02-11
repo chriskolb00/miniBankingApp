@@ -7,10 +7,11 @@ import { ToastService } from '../../../core/services/toast.service';
 import { Customer } from '../../../core/models/customer.model';
 import { Account } from '../../../core/models/account.model';
 import { CurrencyFormatPipe } from '../../../shared/pipes/currency-format-pipe';
+import { ConfirmationModalComponent } from '../../../shared/components/confirmation-modal/confirmation-modal';
 
 @Component({
   selector: 'app-customer-details',
-  imports: [CommonModule, RouterModule, CurrencyFormatPipe],
+  imports: [CommonModule, RouterModule, CurrencyFormatPipe, ConfirmationModalComponent],
   templateUrl: './customer-details.html',
   styleUrl: './customer-details.scss',
 })
@@ -18,6 +19,7 @@ export class CustomerDetailsComponent implements OnInit {
   customer: Customer | null = null;
   accounts: Account[] = [];
   customerId: number = 0;
+  showDeleteModal: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -60,19 +62,27 @@ export class CustomerDetailsComponent implements OnInit {
     });
   }
 
-  deleteCustomer(): void {
-    if (confirm('Are you sure you want to delete this customer?')) {
-      this.customerService.delete(this.customerId).subscribe({
-        next: () => {
-          this.toastService.success('Customer deleted successfully');
-          this.router.navigate(['/customers']);
-        },
-        error: (err) => {
-          this.toastService.error('Failed to delete customer');
-          console.error(err);
-        }
-      });
-    }
+  openDeleteModal(): void {
+    this.showDeleteModal = true;
+  }
+
+  closeDeleteModal(): void {
+    this.showDeleteModal = false;
+  }
+
+  confirmDelete(): void {
+    this.customerService.delete(this.customerId).subscribe({
+      next: () => {
+        this.toastService.success('Customer deleted successfully');
+        this.closeDeleteModal();
+        this.router.navigate(['/customers']);
+      },
+      error: (err) => {
+        this.toastService.error('Failed to delete customer');
+        console.error(err);
+        this.closeDeleteModal();
+      }
+    });
   }
 
   getTotalBalance(): number {

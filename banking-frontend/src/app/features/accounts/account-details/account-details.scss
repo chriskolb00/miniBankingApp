@@ -83,6 +83,122 @@
       font-size: 1.5rem;
     }
 
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 20px;
+
+      .summary-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-icon {
+          font-size: 2.5rem;
+          opacity: 0.9;
+        }
+
+        .card-content {
+          flex: 1;
+
+          .card-label {
+            font-size: 0.875rem;
+            color: #666;
+            margin-bottom: 5px;
+          }
+
+          .card-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 3px;
+          }
+
+          .card-count {
+            font-size: 0.75rem;
+            color: #999;
+          }
+        }
+
+        &.deposit {
+          border-left: 4px solid #28a745;
+
+          .card-value {
+            color: #28a745;
+          }
+        }
+
+        &.withdrawal {
+          border-left: 4px solid #dc3545;
+
+          .card-value {
+            color: #dc3545;
+          }
+        }
+
+        &.transfer {
+          border-left: 4px solid #17a2b8;
+
+          .card-value {
+            color: #17a2b8;
+          }
+        }
+      }
+    }
+
+    .filters {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+
+      .filter-btn {
+        padding: 10px 20px;
+        border: 2px solid #ddd;
+        border-radius: 6px;
+        background: white;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+          border-color: #007bff;
+          color: #007bff;
+        }
+
+        &.active {
+          background-color: #007bff;
+          border-color: #007bff;
+          color: white;
+        }
+
+        &.deposit.active {
+          background-color: #28a745;
+          border-color: #28a745;
+        }
+
+        &.withdrawal.active {
+          background-color: #dc3545;
+          border-color: #dc3545;
+        }
+
+        &.transfer.active {
+          background-color: #17a2b8;
+          border-color: #17a2b8;
+        }
+      }
+    }
+
     .transactions-table {
       background: white;
       border-radius: 8px;

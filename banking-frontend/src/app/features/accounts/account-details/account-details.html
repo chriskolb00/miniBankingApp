@@ -38,7 +38,63 @@
   <div class="transactions-section">
     <h2>Transaction History ({{ transactions.length }})</h2>
 
-    <div class="transactions-table" *ngIf="transactions.length > 0; else noTransactions">
+    <!-- Transaction Summary Cards -->
+    <div class="summary-cards" *ngIf="transactions.length > 0">
+      <div class="summary-card deposit">
+        <div class="card-icon">💰</div>
+        <div class="card-content">
+          <div class="card-label">Total Deposits</div>
+          <div class="card-value">{{ totalDeposits | currencyFormat }}</div>
+          <div class="card-count">{{ depositCount }} transaction{{ depositCount !== 1 ? 's' : '' }}</div>
+        </div>
+      </div>
+      <div class="summary-card withdrawal">
+        <div class="card-icon">💸</div>
+        <div class="card-content">
+          <div class="card-label">Total Withdrawals</div>
+          <div class="card-value">{{ totalWithdrawals | currencyFormat }}</div>
+          <div class="card-count">{{ withdrawalCount }} transaction{{ withdrawalCount !== 1 ? 's' : '' }}</div>
+        </div>
+      </div>
+      <div class="summary-card transfer">
+        <div class="card-icon">🔄</div>
+        <div class="card-content">
+          <div class="card-label">Total Transfers</div>
+          <div class="card-value">{{ totalTransfers | currencyFormat }}</div>
+          <div class="card-count">{{ transferCount }} transaction{{ transferCount !== 1 ? 's' : '' }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter Buttons -->
+    <div class="filters" *ngIf="transactions.length > 0">
+      <button 
+        class="filter-btn" 
+        [class.active]="selectedType === 'all'"
+        (click)="filterByType('all')">
+        All ({{ transactions.length }})
+      </button>
+      <button 
+        class="filter-btn deposit" 
+        [class.active]="selectedType === 'deposit'"
+        (click)="filterByType('deposit')">
+        Deposits ({{ depositCount }})
+      </button>
+      <button 
+        class="filter-btn withdrawal" 
+        [class.active]="selectedType === 'withdrawal'"
+        (click)="filterByType('withdrawal')">
+        Withdrawals ({{ withdrawalCount }})
+      </button>
+      <button 
+        class="filter-btn transfer" 
+        [class.active]="selectedType === 'transfer'"
+        (click)="filterByType('transfer')">
+        Transfers ({{ transferCount }})
+      </button>
+    </div>
+
+    <div class="transactions-table" *ngIf="filteredTransactions.length > 0; else noTransactions">
       <table>
         <thead>
           <tr>
@@ -51,7 +107,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let transaction of transactions">
+          <tr *ngFor="let transaction of filteredTransactions">
             <td>{{ transaction.timestamp | date:'short' }}</td>
             <td>
               <span 

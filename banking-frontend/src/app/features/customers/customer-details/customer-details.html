@@ -4,7 +4,7 @@
     <div class="actions">
       <button class="btn btn-secondary" routerLink="/customers">Back to List</button>
       <button class="btn btn-primary" [routerLink]="['/accounts/new']" [queryParams]="{customerId: customer.id}">+ Create Account</button>
-      <button class="btn btn-danger" (click)="deleteCustomer()">Delete Customer</button>
+      <button class="btn btn-danger" (click)="openDeleteModal()">Delete Customer</button>
     </div>
   </div>
 
@@ -89,3 +89,16 @@
 <div class="loading" *ngIf="!customer">
   <p>Loading customer details...</p>
 </div>
+
+<!-- Confirmation Modal -->
+<app-confirmation-modal
+  *ngIf="customer"
+  [isOpen]="showDeleteModal"
+  [title]="'Delete Customer'"
+  [message]="'Are you sure you want to delete ' + customer.firstName + ' ' + customer.lastName + '? This action cannot be undone and will affect ' + accounts.length + ' account(s).'"
+  [confirmText]="'Delete'"
+  [cancelText]="'Cancel'"
+  [type]="'danger'"
+  (confirm)="confirmDelete()"
+  (cancel)="closeDeleteModal()">
+</app-confirmation-modal>
