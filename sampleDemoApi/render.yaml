@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: mini-banking-api
+    runtime: dotnet
+    plan: free
+    buildCommand: dotnet publish --no-restore -c Release -o out
+    startCommand: cd out && dotnet SampeDemoApi.dll --urls http://0.0.0.0:$PORT
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: ASPNETCORE_URLS
+        value: http://0.0.0.0:$PORT
+
