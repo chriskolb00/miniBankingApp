@@ -1,4 +1,4 @@
 export const environment = {
-  production: false,
-  apiUrl: 'http://localhost:5205/api'
+  production: true,
+  apiUrl: 'https://minibankingapp-6991.onrender.com//api'  // Replace with your actual Render URL
 };
