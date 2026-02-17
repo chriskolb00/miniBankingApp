@@ -45,6 +45,24 @@ else
 
 var app = builder.Build();
 
+// Automatically apply migrations and ensure database is created
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<AppDbContext>();
+        Console.WriteLine("📦 Ensuring database is created and migrations are applied...");
+        context.Database.Migrate(); // This creates DB if not exists and applies all migrations
+        Console.WriteLine("✅ Database is ready!");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"❌ Error initializing database: {ex.Message}");
+        Console.WriteLine($"Stack trace: {ex.StackTrace}");
+    }
+}
+
 // Health check endpoint to verify database connection
 app.MapGet("/api/health", (AppDbContext db) =>
 {
@@ -62,11 +80,9 @@ app.MapGet("/api/health", (AppDbContext db) =>
 });
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// Enable Swagger in all environments (useful for testing on Render)
+app.UseSwagger();
+app.UseSwaggerUI();
 
 // Enable CORS
 app.UseCors("AllowAll");
