@@ -29,9 +29,29 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 if (!string.IsNullOrEmpty(connectionString))
 {
-    // Production: Use PostgreSQL (from Supabase or other provider)
-    Console.WriteLine("🗄️  Using PostgreSQL (Supabase) database");
-    Console.WriteLine($"📡 Host: {connectionString.Split(';')[0].Replace("Host=", "")}");
+    // Production: Use PostgreSQL (from Render or other provider)
+    Console.WriteLine("🗄️  Using PostgreSQL database");
+    
+    // Handle both URI format (postgresql://) and connection string format (Host=...)
+    if (connectionString.StartsWith("postgresql://") || connectionString.StartsWith("postgres://"))
+    {
+        // Convert PostgreSQL URI to Npgsql connection string format
+        var uri = new Uri(connectionString);
+        var host = uri.Host;
+        var port = uri.Port > 0 ? uri.Port : 5432;
+        var database = uri.AbsolutePath.Trim('/');
+        var userInfo = uri.UserInfo.Split(':');
+        var username = userInfo[0];
+        var password = userInfo.Length > 1 ? userInfo[1] : "";
+        
+        connectionString = $"Host={host};Port={port};Database={database};Username={username};Password={password};SSL Mode=Require;Trust Server Certificate=true";
+        Console.WriteLine($"📡 Connected to: {host}/{database}");
+    }
+    else
+    {
+        Console.WriteLine($"📡 Host: {connectionString.Split(';')[0].Replace("Host=", "")}");
+    }
+    
     builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseNpgsql(connectionString));
 }
