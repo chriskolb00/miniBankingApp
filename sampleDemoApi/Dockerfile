@@ -15,12 +15,10 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=build /app/out .
 
-# Expose port (Render will set this via $PORT)
+# Expose port (Render dynamically sets $PORT)
 EXPOSE 8080
 
-# Set environment variable for ASP.NET to listen on all interfaces
-ENV ASPNETCORE_URLS=http://+:8080
-
 # Run the application
-ENTRYPOINT ["dotnet", "SampeDemoApi.dll"]
+# Render will set the PORT environment variable
+CMD dotnet SampeDemoApi.dll --urls http://0.0.0.0:${PORT:-8080}
 
