@@ -92,7 +92,7 @@ app.MapGet("/api/health", (AppDbContext db) =>
     return Results.Ok(new
     {
         Status = "Healthy",
-        Database = isPostgres ? "PostgreSQL (Supabase)" : "SQLite",
+        Database = isPostgres ? "PostgreSQL" : "SQLite",
         Provider = dbProvider,
         Environment = app.Environment.EnvironmentName,
         Timestamp = DateTime.UtcNow

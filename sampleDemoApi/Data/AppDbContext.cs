@@ -18,6 +18,19 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        // Configure identity columns for PostgreSQL
+        modelBuilder.Entity<Customer>()
+            .Property(c => c.Id)
+            .UseIdentityAlwaysColumn();
+
+        modelBuilder.Entity<Account>()
+            .Property(a => a.Id)
+            .UseIdentityAlwaysColumn();
+
+        modelBuilder.Entity<Transaction>()
+            .Property(t => t.Id)
+            .UseIdentityAlwaysColumn();
+
         // Configure Customer -> Account relationship
         modelBuilder.Entity<Customer>()
             .HasMany(c => c.Accounts)
